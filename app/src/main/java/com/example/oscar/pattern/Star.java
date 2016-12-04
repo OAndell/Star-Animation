@@ -27,7 +27,7 @@ public class Star {
         this.background = background;
         positionVector[0] = origin[0] - rnd.nextInt(background.getCanvasWidth());
         positionVector[1] = origin[1] - rnd.nextInt(background.getCanvasHeight());
-        positionVector[2] = rnd.nextInt(5);
+        positionVector[2] = rnd.nextInt(10);
 
         previousPosVector[0] = positionVector[0];
         previousPosVector[1] = positionVector[1];
@@ -46,9 +46,9 @@ public class Star {
     private void update(){
        previousPosVector[0] = positionVector[0];
        previousPosVector[1] = positionVector[1];
-       positionVector[0] *= background.getSpeed();
-       positionVector[1] *= background.getSpeed();
-       positionVector[2] *= background.getSpeed();
+       positionVector[0] *= background.getSpeed() + positionVector[2]*0.01; //Faster when closer;
+       positionVector[1] *= background.getSpeed() + positionVector[2]*0.01;
+       positionVector[2] *= background.getSpeed() + positionVector[2]*0.01;
        paint.setStrokeWidth(positionVector[2]);
        if(!isInsideCanvas()){
            reset();

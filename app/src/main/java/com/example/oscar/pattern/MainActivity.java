@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getY() > screenHeight/2){
-                    backgroundCanvas.setSpeed(backgroundCanvas.getSpeed() + 0.01f);
+                    backgroundCanvas.setSpeed(backgroundCanvas.getSpeed() + 0.005f);
                 }
                 else{
-                    backgroundCanvas.setSpeed(backgroundCanvas.getSpeed() - 0.01f);
+                    backgroundCanvas.setSpeed(backgroundCanvas.getSpeed() - 0.005f);
                 }
                 return true;
             }
