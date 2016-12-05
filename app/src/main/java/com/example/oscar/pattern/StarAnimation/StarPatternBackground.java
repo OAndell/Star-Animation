@@ -1,4 +1,4 @@
-package com.example.oscar.pattern;
+package com.example.oscar.pattern.StarAnimation;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,15 +19,20 @@ public class StarPatternBackground extends View {
     private Paint paint = new Paint();
     private ArrayList<Star> stars = new ArrayList<>();
 
-    private int numberOfStars = 50;
+    private int numberOfStars = 200;
     private int width;
     private int height;
-    private float speed = 1.05f;
+    private float speed = 1f;
+    private float origin[] = new float[2];
+    private boolean stop = false;
+    private int updateSpeed = 2;
 
     public StarPatternBackground(Context context, int width, int height) {
         super(context);
         this.width = width;
         this.height = height;
+        origin[0] = width/2;
+        origin[1] = height/2;
         this.setLayoutParams(new LinearLayout.LayoutParams(width, height));
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
@@ -62,22 +67,49 @@ public class StarPatternBackground extends View {
        return speed;
     }
 
+    public float[] getOrigin(){
+        return origin;
+    }
+
     public void setSpeed(float speed){
         this.speed = speed;
         if(this.speed < 1){
             this.speed = 1;
+            stop = true;
+        }
+        else {
+            stop = false;
         }
     }
 
+    public void HandleRotation(float angleX, float angleY){
+        for (int i = 0; i < stars.size(); i++) {
+            stars.get(i).rotateX(angleX);
+            stars.get(i).rotateY(angleY);
+        }
+    }
+
+    protected ArrayList<Star> getStars(){
+        return stars;
+    }
+
+    protected boolean isStopped(){
+        return stop;
+    }
+
+    /**
+     * Starts Animation
+     */
     private void start(final StarPatternBackground bc){
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 bc.invalidate();
-                handler.postDelayed(this, 20);
+                handler.postDelayed(this, updateSpeed);
             }
-        }, 20);
+        }, updateSpeed);
     }
+
 
 }
