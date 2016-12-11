@@ -8,17 +8,18 @@ import java.util.Random;
 
 /**
  * Created by Oscar on 2016-12-04.
- * @// TODO: 2016-12-05 remove magic numbers
  */
 
 public class Star {
-    private float[] positionVector = new float[3]; //3d vector
-    private float[] previousPosVector = new float[2];
+    private float[] positionVector = new float[3]; //3d vector (x,y,z)
+    private float[] previousPosVector = new float[2]; //2d vector (x,y)
 
     private Random rnd = new Random();
     private Paint paint = new Paint();
     private StarPatternBackground background;
     private int maxStartRadius = 10;
+    private int deafultDistanceFromScreen = 10;
+    private double accelerationConstant = 0.005; //Not really acceleration.
 
     public Star(StarPatternBackground background){
         this.background = background;
@@ -31,8 +32,8 @@ public class Star {
     }
 
     public void draw(Canvas canvas){
-        canvas.drawCircle(translateX(positionVector[0]),translateY(positionVector[1]), positionVector[2],paint);
-        canvas.drawLine(translateX(previousPosVector[0]), translateY(previousPosVector[1]), translateX(positionVector[0]), translateY(positionVector[1]), paint);
+        canvas.drawCircle(translateX(positionVector[0]),translateY(positionVector[1]), positionVector[2],paint); //Draw star
+        canvas.drawLine(translateX(previousPosVector[0]), translateY(previousPosVector[1]), translateX(positionVector[0]), translateY(positionVector[1]), paint); //Draw line to previus pos
         update();
     }
 
@@ -50,30 +51,33 @@ public class Star {
         return background.getOrigin()[1] + y;
     }
 
+
     public void rotateX(float x){
-        float offset = x*(10+ positionVector[2]);
+        float offset = x*(deafultDistanceFromScreen + positionVector[2]);
         positionVector[0] += offset;
         previousPosVector[0] += offset;
     }
 
     public void rotateY(float y){
-        float offset = y*(10+ positionVector[2]);
+        float offset = y*(deafultDistanceFromScreen+ positionVector[2]);
         positionVector[1] += offset;
         previousPosVector[1] += offset;
     }
 
 
+    /**
+     * Update star to new pos. Increase speed. Reset if outside screen
+     */
     private void update(){
          previousPosVector[0] = positionVector[0];
          previousPosVector[1] = positionVector[1];
-         positionVector[0] *= background.getSpeed() + positionVector[2]*0.005; //Faster when closer;
-         positionVector[1] *= background.getSpeed() + positionVector[2]*0.005;
-         positionVector[2] *= background.getSpeed() + positionVector[2]*0.005;
+         positionVector[0] *= background.getSpeed() + positionVector[2]*accelerationConstant; //Faster when closer;
+         positionVector[1] *= background.getSpeed() + positionVector[2]*accelerationConstant;
+         positionVector[2] *= background.getSpeed() + positionVector[2]*accelerationConstant;
          paint.setStrokeWidth(positionVector[2]);
         if(!isInsideCanvas()){
             reset();
         }
-
     }
 
     /**
@@ -97,6 +101,9 @@ public class Star {
         }
     }
 
+    /**
+     * Reset the positionvector by giving it a random new position.
+     */
     private void reset(){
         positionVector[0] = background.getOrigin()[0] - rnd.nextInt(background.getCanvasWidth());
         positionVector[1] = background.getOrigin()[1] - rnd.nextInt(background.getCanvasHeight());

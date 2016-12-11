@@ -19,7 +19,7 @@ public class StarPatternBackground extends View {
     private Paint paint = new Paint();
     private ArrayList<Star> stars = new ArrayList<>();
 
-    private int numberOfStars = 200;
+    private int numberOfStars;
     private int width;
     private int height;
     private float speed = 1f;
@@ -27,10 +27,11 @@ public class StarPatternBackground extends View {
     private boolean stop = false;
     private int updateSpeed = 2;
 
-    public StarPatternBackground(Context context, int width, int height) {
+    public StarPatternBackground(Context context, int width, int height, int numberOfStars) {
         super(context);
         this.width = width;
         this.height = height;
+        this.numberOfStars = numberOfStars;
         origin[0] = width/2;
         origin[1] = height/2;
         this.setLayoutParams(new LinearLayout.LayoutParams(width, height));
@@ -51,7 +52,7 @@ public class StarPatternBackground extends View {
         super.onDraw(canvas);
         canvas.drawRect(0, 0, width, height, paint); //Paints whole view black
         for (int i = 0; i < numberOfStars; i++) {
-            stars.get(i).draw(canvas);
+            stars.get(i).draw(canvas); //update all stars
         }
     }
 
@@ -79,13 +80,6 @@ public class StarPatternBackground extends View {
         }
         else {
             stop = false;
-        }
-    }
-
-    public void HandleRotation(float angleX, float angleY){
-        for (int i = 0; i < stars.size(); i++) {
-            stars.get(i).rotateX(angleX);
-            stars.get(i).rotateY(angleY);
         }
     }
 

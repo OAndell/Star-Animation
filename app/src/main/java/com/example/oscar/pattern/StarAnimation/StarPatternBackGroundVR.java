@@ -8,16 +8,15 @@ import android.hardware.SensorManager;
 
 
 /**
- * Created by Oscar on 2016-12-05.
+ * StarPatternBackground but with Gyroscope support added on top.
  */
-
 public class StarPatternBackgroundVR extends StarPatternBackground {
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
-    public StarPatternBackgroundVR(Context context, int width, int height) {
-        super(context, width, height);
+    public StarPatternBackgroundVR(Context context, int width, int height, int numberOfStars) {
+        super(context, width, height, numberOfStars);
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mSensorManager.registerListener(new SensorEventListener() {
@@ -30,6 +29,15 @@ public class StarPatternBackgroundVR extends StarPatternBackground {
         }, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_GAME );
     }
 
+    /**
+     * Loop through and move all stars.
+     */
+    private void HandleRotation(float speedX, float speedY){
+        for (int i = 0; i < getStars().size(); i++) {
+            getStars().get(i).rotateX(speedX);
+            getStars().get(i).rotateY(speedY);
+        }
+    }
 
 
 }

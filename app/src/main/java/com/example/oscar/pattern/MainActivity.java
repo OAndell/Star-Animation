@@ -14,6 +14,8 @@ import com.example.oscar.pattern.StarAnimation.StarPatternBackgroundVR;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         LinearLayout layout = new LinearLayout(this);
-        final StarPatternBackgroundVR backgroundCanvas = new StarPatternBackgroundVR(this, screenWidth, screenHeight);
+        final StarPatternBackgroundVR backgroundCanvas = new StarPatternBackgroundVR(this, screenWidth, screenHeight, 200);
         backgroundCanvas.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
